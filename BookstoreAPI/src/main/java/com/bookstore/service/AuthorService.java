@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 
 
-public class AuthorService {
+    public class AuthorService {
     private static final Map<Long, Author> authors = new HashMap<>();
     private static final AtomicLong idCounter = new AtomicLong(1);
     

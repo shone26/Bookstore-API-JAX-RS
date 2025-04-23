@@ -4,6 +4,7 @@
  */
 package com.bookstore.app;
 
+import com.bookstore.resource.CustomerResource;
 import com.bookstore.mapper.*;
 import com.bookstore.resource.*;
 
