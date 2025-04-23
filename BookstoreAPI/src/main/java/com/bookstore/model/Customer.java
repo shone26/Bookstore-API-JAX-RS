@@ -4,10 +4,18 @@
  */
 package com.bookstore.model;
 
+import java.util.List;
+
 /**
  *
  * @author Shone
  */
 public class Customer {
+    private Long id;
+    private String name;
+    private String email;
+    private String password;
+    private Cart cart;
+    private List<Order> orders;
     
 }
