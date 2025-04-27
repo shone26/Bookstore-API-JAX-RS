@@ -6,26 +6,36 @@ package com.bookstore.model;
 
 /**
  *
- * @author Shone
+ * @author Umesh 
  */
 public class Author {
     private Long id;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String biography;
     
     // Constructors
     public Author() {}
     
-    public Author(String name, String biography) {
-        this.name = name;
+    public Author(String firstName, String lastName, String biography) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.biography = biography;
     }
+    
+
     
     // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+//    public String getName() { return firstName + lastName;}
+        public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
     public String getBiography() { return biography; }
     public void setBiography(String biography) { this.biography = biography; }
 }

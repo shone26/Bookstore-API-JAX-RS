@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  *
- * @author Shone
+ * @author Umesh
  */
 
 
@@ -25,7 +25,7 @@ public class CustomerService {
     private static final Map<Long, Customer> customers = new HashMap<>();
     private static final AtomicLong idCounter = new AtomicLong(1);
     
-        // Add this regex pattern as a constant in your CustomerService class
+    // Add this regex pattern as a constant in your CustomerService class
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
     
@@ -34,7 +34,7 @@ public class CustomerService {
         validateCustomer(customer);
         
         customer.setId(idCounter.getAndIncrement());
-                customers.put(customer.getId(), customer);
+        customers.put(customer.getId(), customer);
         return customer;
     }
     
@@ -80,8 +80,12 @@ public class CustomerService {
     
     // Helper method to validate customer data
     private void validateCustomer(Customer customer) {
-        if (customer.getName() == null || customer.getName().trim().isEmpty()) {
-            throw new InvalidInputException("Customer name cannot be empty.");
+        if (customer.getFirstName() == null || customer.getFirstName().trim().isEmpty()) {
+            throw new InvalidInputException("Customer first name cannot be empty.");
+        }
+        
+        if (customer.getLastName() == null || customer.getLastName().trim().isEmpty()) {
+            throw new InvalidInputException("Customer last name cannot be empty.");
         }
         
         if (customer.getEmail() == null || customer.getEmail().trim().isEmpty()) {
@@ -91,23 +95,25 @@ public class CustomerService {
         if (customer.getPassword() == null || customer.getPassword().trim().isEmpty()) {
             throw new InvalidInputException("Password cannot be empty.");
         }
-            // Check if customer with same email already exists
+        
+        // Check if customer with the same email already exists
         if (customerWithEmailExists(customer.getEmail())) {
             throw new InvalidInputException("Customer with email '" + customer.getEmail() + "' already exists.");
         }
         
+        // Validate email format
         if (!isValidEmail(customer.getEmail())) {
             throw new InvalidInputException("Invalid email format. Please provide a valid email address.");
         }
     }
     
-        // Add this method to check if a customer with the same email already exists
+    // Method to check if a customer with the same email already exists
     private boolean customerWithEmailExists(String email) {
         return customers.values().stream()
                 .anyMatch(customer -> customer.getEmail().equalsIgnoreCase(email));
     }
     
-        // Add this method to validate email format
+    // Method to validate email format
     private boolean isValidEmail(String email) {
         if (email == null) {
             return false;

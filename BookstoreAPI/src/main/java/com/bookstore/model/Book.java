@@ -6,7 +6,7 @@ package com.bookstore.model;
 
 /**
  *
- * @author Shone
+ * @author Umesh 
  */
 public class Book {
     private Long id;

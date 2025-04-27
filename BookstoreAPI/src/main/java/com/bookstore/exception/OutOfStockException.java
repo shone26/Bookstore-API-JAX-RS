@@ -6,7 +6,7 @@ package com.bookstore.exception;
 
 /**
  *
- * @author Shone
+ * @author Umesh 
  */
 public class OutOfStockException extends RuntimeException {
     public OutOfStockException(String message) {
