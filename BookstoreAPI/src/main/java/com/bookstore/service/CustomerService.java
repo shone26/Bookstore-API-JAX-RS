@@ -4,6 +4,7 @@
  */
 package com.bookstore.service;
 
+import java.util.regex.Pattern;
 import com.bookstore.exception.CustomerNotFoundException;
 import com.bookstore.exception.InvalidInputException;
 import com.bookstore.model.Customer;
@@ -23,6 +24,10 @@ import java.util.concurrent.atomic.AtomicLong;
 public class CustomerService {
     private static final Map<Long, Customer> customers = new HashMap<>();
     private static final AtomicLong idCounter = new AtomicLong(1);
+    
+        // Add this regex pattern as a constant in your CustomerService class
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
     
     // Create a customer
     public Customer createCustomer(Customer customer) {
@@ -86,5 +91,27 @@ public class CustomerService {
         if (customer.getPassword() == null || customer.getPassword().trim().isEmpty()) {
             throw new InvalidInputException("Password cannot be empty.");
         }
+            // Check if customer with same email already exists
+        if (customerWithEmailExists(customer.getEmail())) {
+            throw new InvalidInputException("Customer with email '" + customer.getEmail() + "' already exists.");
+        }
+        
+        if (!isValidEmail(customer.getEmail())) {
+            throw new InvalidInputException("Invalid email format. Please provide a valid email address.");
+        }
+    }
+    
+        // Add this method to check if a customer with the same email already exists
+    private boolean customerWithEmailExists(String email) {
+        return customers.values().stream()
+                .anyMatch(customer -> customer.getEmail().equalsIgnoreCase(email));
+    }
+    
+        // Add this method to validate email format
+    private boolean isValidEmail(String email) {
+        if (email == null) {
+            return false;
+        }
+        return EMAIL_PATTERN.matcher(email).matches();
     }
 }

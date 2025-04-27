@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicLong;
     // Create an author
     public Author createAuthor(Author author) {
         validateAuthor(author);
+
         
         author.setId(idCounter.getAndIncrement());
         authors.put(author.getId(), author);
@@ -78,5 +79,15 @@ import java.util.concurrent.atomic.AtomicLong;
         if (author.getName() == null || author.getName().trim().isEmpty()) {
             throw new InvalidInputException("Author name cannot be empty.");
         }
+
+        if (authorNameExists(author.getName())) {
+            throw new InvalidInputException("Author with name '" + author.getName() + "' already exists.");
+        }
     }
+    
+    private boolean authorNameExists(String name) {
+    return authors.values().stream()
+            .anyMatch(author -> author.getName().equalsIgnoreCase(name));
+}
+    
 }

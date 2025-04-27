@@ -68,6 +68,7 @@ public class BookService {
         if (!books.containsKey(id)) {
             throw new BookNotFoundException(id);
         }
+        books.remove(id);
     }
     
     //get books by author
@@ -83,7 +84,7 @@ public class BookService {
     
     //helper methods to validate books data
     private void validateBook(Book book) {
-        if (book.getTitle() == null || book.getTitle().trim().isBlank()) {
+        if (book.getTitle() == null || book.getTitle().trim().isEmpty()) {
             throw new InvalidInputException("Book ID cannot be null.");
         }
         
@@ -111,15 +112,25 @@ public class BookService {
         if (book.getStock() == null || book.getStock() <= 0) {
             throw new InvalidInputException("Stock cannot be negative");
         }
+            // Check if book with same ISBN already exists
+    if (bookWithIsbnExists(book.getIsbn())) {
+        throw new InvalidInputException("Book with ISBN '" + book.getIsbn() + "' already exists.");
+    }
+    
+        
     }
     
     //reduce stock when placing and order
-        public void reduceStock(Long bookId, int quantity) {
+    public void reduceStock(Long bookId, int quantity) {
         Book book = getBookById(bookId);
-        if (book.getStock() < quantity) {
-            throw new OutOfStockException(bookId, quantity, book.getStock());
-        }   
+            if (book.getStock() < quantity) {
+                throw new OutOfStockException(bookId, quantity, book.getStock());
+            }   
         book.setStock(book.getStock() - quantity);
     }
-
+    // Add this method to check if a book with the same ISBN already exists
+    private boolean bookWithIsbnExists(String isbn) {
+        return books.values().stream()
+                .anyMatch(book -> book.getIsbn().equals(isbn));
+}
 }
